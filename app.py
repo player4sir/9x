@@ -64,8 +64,7 @@ async def extract_data_from_results(page):
         # 获取下载链接，如果不存在则为None
         data['link'] = download_link_element['href'] if download_link_element and 'href' in download_link_element.attrs else None
         # 如果格式是mp4，则将字典添加到列表中
-        if data['format'] == 'mp4':
-            results.append(data)
+        results.append(data)
     # 返回结果列表
     return results
 
@@ -132,3 +131,4 @@ if __name__ == "__main__":
     web_site = 'https://9xbuddy.xyz/en-1cd'
     # 运行应用
     app.run(host='0.0.0.0',port=8080,debug=False,threaded=False)
+
