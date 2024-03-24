@@ -7,19 +7,19 @@ WORKDIR /app
 # 复制当前目录下的所有文件到容器中
 COPY . .
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+# 更新Alpine Linux仓库并安装依赖，然后清理缓存
+RUN apk update && \
+    apk add --no-cache openssl ca-certificates chromium nss freetype freetype-dev harfbuzz ttf-freefont && \
+    sed -i -e 's/http:/https:/' /etc/apk/repositories && \
+    rm -rf /var/cache/apk/*
 
-# 更新Alpine Linux仓库
-RUN apk update && apk upgrade
-RUN sed -i -e 's/http:/https:/' /etc/apk/repositories
 # 安装 Python 依赖包
 RUN pip install --no-cache-dir -r requirements.txt
-# 安装 Pyppeteer 的依赖，包括 Chromium 浏览器
-RUN apk add --no-cache openssl ca-certificates chromium nss freetype freetype-dev harfbuzz ttf-freefont
 
+# 设置Pyppeteer的可执行路径环境变量
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-# 暴露 5000 端口
+# 暴露 8080 端口
 EXPOSE 8080
 
 # 启动 Python 应用
