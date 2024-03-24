@@ -10,7 +10,7 @@ from fake_useragent import UserAgent
 
 # 创建一个Flask对象
 app = Flask(__name__)
-
+web_site = 'https://9xbuddy.xyz/en-1cd'
 # 定义一个异步函数，用于导航到网站
 async def navigate_to_website(page):
     await page.goto(web_site)
@@ -126,9 +126,6 @@ def scrape():
     return jsonify(results)
 
 # 如果是主模块，运行应用
-if __name__ == "__main__":
-    # 定义网站的地址
-    web_site = 'https://9xbuddy.xyz/en-1cd'
-    # 运行应用
-    app.run(host='0.0.0.0',port=8080,debug=False,threaded=False)
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0',port=8080,debug=False,threaded=False)
 
