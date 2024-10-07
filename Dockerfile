@@ -14,8 +14,16 @@ RUN apk update && \
     rm -rf /var/cache/apk/* && \
     pip install --no-cache-dir -r requirements.txt
 
-# 设置Pyppeteer的可执行路径环境变量
+# 设置Playwright相关的环境变量
+ENV PLAYWRIGHT_BROWSERS_PATH=/usr/bin
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# 设置Node.js内存限制
+ENV NODE_OPTIONS=--max_old_space_size=256
+
+# 设置其他环境变量（如果需要）
+ENV WEB_SITE=https://9xbuddy.xyz/en-1cd
 
 # 复制剩余的应用文件
 COPY . .
@@ -27,5 +35,5 @@ USER nonrootuser
 # 暴露 8080 端口
 EXPOSE 8080
 
-# 启动 Python 应用
-CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
+# 启动 Python 应用，设置 worker 数量和超时
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-w", "2", "--timeout", "120", "-b", "0.0.0.0:8080", "app:app"]

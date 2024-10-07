@@ -1,5 +1,4 @@
-﻿beautifulsoup4
-fake-useragent
-Flask
-pyppeteer
+﻿fastapi
+uvicorn
 gunicorn
+playwright
