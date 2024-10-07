@@ -9,10 +9,13 @@ COPY requirements.txt .
 
 # 更新Alpine Linux仓库并安装依赖，然后清理缓存
 RUN apk update && \
-    apk add --no-cache openssl ca-certificates chromium nss freetype freetype-dev harfbuzz ttf-freefont && \
+    apk add --no-cache openssl ca-certificates chromium nss freetype freetype-dev harfbuzz ttf-freefont \
+    gcc musl-dev python3-dev libffi-dev openssl-dev cargo && \
     sed -i -e 's/http:/https:/' /etc/apk/repositories && \
-    rm -rf /var/cache/apk/* && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    apk del gcc musl-dev python3-dev libffi-dev openssl-dev cargo && \
+    rm -rf /var/cache/apk/*
 
 # 设置Playwright相关的环境变量
 ENV PLAYWRIGHT_BROWSERS_PATH=/usr/bin
