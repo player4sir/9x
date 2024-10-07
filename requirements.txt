@@ -2,3 +2,4 @@
 uvicorn
 gunicorn
 playwright
+crawl4ai
